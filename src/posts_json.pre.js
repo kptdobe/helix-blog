@@ -16,6 +16,17 @@ function removePosition(node) {
   }
 }
 
+function cleanUpPayload(payload) {
+  const p = payload;
+  delete p.resource.body;
+  delete p.resource.html;
+
+  removePosition(p.resource.mdast);
+  removePosition(p.resource.htast);
+
+  return p;
+}
+
 async function fetchPosts(apiRoot, owner, repo, logger) {
   logger.debug('posts_json-pre.js - Collecting posts');
 
@@ -65,17 +76,6 @@ async function feedThePosts(posts, baseURI, logger) {
     ret.push(res);
   });
   return ret;
-}
-
-function cleanUpPayload(payload) {
-  const p = payload;
-  delete p.resource.body;
-  delete p.resource.html;
-
-  removePosition(p.resource.mdast);
-  removePosition(p.resource.htast);
-
-  return p;
 }
 
 // module.exports.pre is a function (taking next as an argument)
