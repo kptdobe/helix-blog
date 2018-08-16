@@ -67,19 +67,24 @@ async function feedThePosts(posts, baseURI, logger) {
   return ret;
 }
 
+function cleanUpPayload(payload) {
+  const p = payload;
+  delete p.resource.body;
+  delete p.resource.html;
+
+  removePosition(p.resource.mdast);
+  removePosition(p.resource.htast);
+
+  return p;
+}
+
 // module.exports.pre is a function (taking next as an argument)
 // that returns a function (with payload, secrets, logger as arguments)
 // that calls next (after modifying the payload a bit)
 async function pre(payload, config) {
   const { logger } = config;
 
-  const p = payload;
-
-  delete p.resource.body;
-  delete p.resource.html;
-
-  removePosition(p.resource.mdast);
-  removePosition(p.resource.htast);
+  const p = cleanUpPayload(payload);
 
   const posts = await fetchPosts(config.REPO_API_ROOT, p.owner, p.repo, logger);
   p.resource.posts = await feedThePosts(posts, 'http://localhost:3000', logger);

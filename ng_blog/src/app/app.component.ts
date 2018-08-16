@@ -29,12 +29,11 @@ export class AppComponent {
 
   ngOnInit() {
     this.content.asObservable().subscribe(json => {
-      console.log('in content subscribe: ', json);
       this.title = json.resource.title;
       this.intro = json.resource.intro;
       this.posts = json.resource.posts;
     });
-    interval(10000).subscribe(() => this.loadContent());
+    interval(60000).subscribe(() => this.loadContent());
     this.loadContent();
   }
 }

@@ -14,17 +14,22 @@ function removePosition(node) {
   }
 }
 
-// module.exports.pre is a function (taking next as an argument)
-// that returns a function (with payload, secrets, logger as arguments)
-// that calls next (after modifying the payload a bit)
-function pre(payload) {
+function cleanUpPayload(payload) {
   const p = payload;
-
   delete p.resource.body;
   delete p.resource.html;
 
   removePosition(p.resource.mdast);
   removePosition(p.resource.htast);
+
+  return p;
+}
+
+// module.exports.pre is a function (taking next as an argument)
+// that returns a function (with payload, secrets, logger as arguments)
+// that calls next (after modifying the payload a bit)
+function pre(payload) {
+  const p = cleanUpPayload(payload);
 
   let jsonStr = JSON.stringify(p);
   p.json = jsonStr;
