@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ContentService } from './content.service';
+import { PostsService } from './posts.service';
+import { JsonPostsContent } from '../objects/posts.json';
 import { JsonContent } from '../objects/content.json';
 import { Observable, interval, ReplaySubject, Subject } from 'rxjs';
 
@@ -11,9 +12,10 @@ import { Observable, interval, ReplaySubject, Subject } from 'rxjs';
 export class AppComponent {
   title: string;
   intro: string;
-  content: Subject<JsonContent>;
+  posts: JsonContent[];
+  content: Subject<JsonPostsContent>;
 
-  constructor(private contentService: ContentService) {
+  constructor(private contentService: PostsService) {
     this.content = new ReplaySubject<any>(1);
   }
 
@@ -30,6 +32,7 @@ export class AppComponent {
       console.log('in content subscribe: ', json);
       this.title = json.resource.title;
       this.intro = json.resource.intro;
+      this.posts = json.resource.posts;
     });
     interval(10000).subscribe(() => this.loadContent());
     this.loadContent();

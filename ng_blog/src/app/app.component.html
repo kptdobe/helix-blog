@@ -2,4 +2,10 @@
 <div style="text-align:center">
   <h1>Welcome to {{ title }}!</h1>
   <p>{{intro}}</p>
+<ul>
+  <li *ngFor="let p of posts">
+    <h2> {{ p.resource.title }}</h2>
+    <p>{{ p.resource.intro }}</p>
+  </li>
+</ul>
 </div>

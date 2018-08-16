@@ -62,8 +62,7 @@ async function feedThePosts(posts, baseURI, logger) {
     };
 
     const res = await request(options);
-    p.rendering = res;
-    ret.push(p);
+    ret.push(res);
   });
   return ret;
 }
